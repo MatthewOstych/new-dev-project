@@ -1,0 +1,39 @@
+# Правила кода Android поверх стандартного набора detekt (buildUponDefaultConfig).
+# Причины лежат в Documentation [{{PROJECT}}] (заметка про Android), коротко в
+# {{ANDROID_DIR}}/AGENTS.md. Размер файла считает ещё и scripts/check-file-size.mjs,
+# одинаково для всех платформ.
+# detekt 2.x: секции build (maxIssues) больше нет, любая находка валит задачу.
+complexity:
+  LargeClass:
+    allowedLines: 350
+  LongMethod:
+    allowedLines: 80
+    # Composable-экран читается разметкой целиком, но и ему потолок нужен.
+  LongParameterList:
+    allowedFunctionParameters: 8
+    allowedConstructorParameters: 10
+    ignoreDefaultParameters: true
+    ignoreAnnotated: ['Composable']
+  TooManyFunctions:
+    allowedFunctionsPerFile: 20
+    allowedFunctionsPerClass: 20
+
+naming:
+  FunctionNaming:
+    # Composable называются с большой буквы, это конвенция Compose.
+    ignoreAnnotated: ['Composable']
+  TopLevelPropertyNaming:
+    constantPattern: '[A-Z][A-Za-z0-9_]*'
+
+style:
+  MagicNumber:
+    # Токены темы (цвета, размеры) и превью это данные, а не магия.
+    excludes: ['**/ui/theme/**', '**/*Preview*.kt', '**/test/**']
+    ignorePropertyDeclaration: true
+    ignoreCompanionObjectPropertyDeclaration: true
+  MaxLineLength:
+    maxLineLength: 140
+  ForbiddenComment:
+    active: false
+  UnusedPrivateFunction:
+    ignoreAnnotated: ['Preview']
